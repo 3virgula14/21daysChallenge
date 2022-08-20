@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+</head>
+<body>
+
+    <!-- view -->
+    <div id="wrapper">
+        <input type="text" id="screen">
+
+        <ul id="teclas">
+            <li style="grid-area: zero">0</li>
+            <li style="grid-area: one">1</li>
+            <li style="grid-area: two">2</li>
+            <li style="grid-area: three">3</li>
+            <li style="grid-area: four">4</li>
+            <li style="grid-area: five">5</li>
+            <li style="grid-area: six">6</li>
+            <li style="grid-area: seven">7</li>
+            <li style="grid-area: eight">8</li>
+            <li style="grid-area: nine">9</li>  
+            <li style="grid-area: plus">+</li>
+            <li style="grid-area: me">-</li>
+            <li style="grid-area: M">*</li>
+            <li style="grid-area: barra">/</li>
+            <li style="grid-area: igual">=</li>
+            <li style="grid-area: C">C</li>  
+        </ul>    
+    </div>
+
+    <!-- controller -->
+    <script>
+        //Obj definition
+            window.Calc = {
+                InputBox: document.querySelector('#screen'),
+                Buttons : document.querySelectorAll('#teclas li'),
+            }
+            const buttonsCount = window.Calc.Buttons.length - 1;
+        //Functions
+            Calc.Buttons.forEach((key, index) => {
+                if(index<=buttonsCount-2) //exclude last two buttons
+                    key.addEventListener('click', (e) => {
+                        console.log(key.textContent + ' called')
+                        window.Calc.InputBox.value += key.textContent;
+                    })
+            });
+
+            // = e C functionalities
+            Calc.Buttons[buttonsCount].addEventListener('click', (e) => {
+                // C
+                console.log('C called')
+                window.Calc.InputBox.value = ''
+            })
+            Calc.Buttons[buttonsCount-1].addEventListener('click', (e) => {
+                // =
+                console.log('= called')
+                window.Calc.InputBox.value = eval(window.Calc.InputBox.value)
+            })
+
+
+        // Testes
+            // console.log(window.Calc); // Obj
+            // console.log(window.Calc.Buttons[0].value) // 0
+            // console.log(window.Calc.InputBox.value) // ''
+
+            
+            // //Calculation test: add 1 + 1
+            // window.Calc.Buttons[1].click()        
+            // window.Calc.Buttons[10].click()
+            // window.Calc.Buttons[1].click()
+            // window.Calc.Buttons[buttonsCount-1].click()
+            // console.log(window.Calc.InputBox.value) // '2'
+
+        window.addEventListener('keydown', e => {
+            if (event.isComposing || event.keyCode === 61) {
+                event.preventDefault()
+                window.Calc.Buttons[buttonsCount-1].click()
+            }
+            if (!(e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) { 
+                event.preventDefault()
+            }
+        })
+
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+        body{
+            margin: 0px;
+            padding: 0px;
+            height: 100vh;
+            width: 100vw;
+        }
+        #wrapper{
+            display: flex;
+            width: min-content;
+            flex-direction: column;
+            font-size: large;
+            font-family: Roboto;
+            margin: 0 auto;
+            margin-top: 20vh;
+            background: linear-gradient(180deg, rgb(79, 135, 219) 0%, 
+                                                rgb(79, 135, 219) 30%, 
+                                                rgb(0, 212, 255) 30%, 
+                                                rgb(0, 212, 255) 100%);
+            border-radius: 10px;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+        }
+
+        input, ul{
+            padding: 0px;
+            margin: 0px;
+            width: 200px;
+            border-radius: 5px;
+        }
+
+        input{
+            border-style: inset;
+            border-width: 10px;
+            background-color: rgb(238, 238, 238);
+            font-size: larger;
+            margin: 20px;
+            text-align: right;
+        }
+        
+        ul{
+            margin-left: 0;
+            padding-left: 0px;
+            margin: 20px;
+            width: 220px;
+            display: grid;
+            grid-template-areas: 
+                'nine eight seven C'
+                'six five four    me'
+                'three two one    M'
+                'zero igual barra plus';
+        }
+        li{
+            list-style: none;
+            padding: 7.5px;
+            text-align: center;
+            background-color: aliceblue;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border: 0.5px solid #ccc
+        }
+        li:hover{
+            background-color: rgb(199, 215, 230);
+        }
+    </style>
+</body>
+</html>
